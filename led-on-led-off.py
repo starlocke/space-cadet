@@ -4,6 +4,7 @@ import random
 import serial
 
 app = Flask(__name__)
+ser = serial.Serial('/dev/tty.usbserial-A1083GYE', 9600)
 
 @app.route('/')
 def index():
@@ -11,18 +12,18 @@ def index():
 
 @app.route('/set/-<int:val>')
 def set_on(val):
-    return serial_send(-(val))
+    return str(serial_send(-(val)))
 
 @app.route('/set/<int:val>')
 def set_off(val):
-    return serial_send(val)
+    return str(serial_send(val))
 
 def serial_send(val):
-    if 0 < val && val < 5:
+    if 0 < val and val < 5:
         val = 5
-    else if -5 < val && val < 0:
+    elif -5 < val and val < 0:
         val = -5
-    else:
+    elif val == 0:
         return 'No-op.'
     try:
         with serial.Serial('/dev/tty.usbserial-A1083GYE', 9600) as ser:
