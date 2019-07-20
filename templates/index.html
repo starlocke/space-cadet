@@ -1,0 +1,21 @@
+<!doctype html>
+<title>LED On, LED Off</title>
+<h1>LED On, LED Off</h1>
+
+<p>Off Duration:</p>
+<input type="range" min="25" max="500" step="25" value="250" onchange="serial_send('off_dur', this.value, '')" oninput="value_show('off_dur', this.value)"> <span id="off_dur">250</span>
+
+<p>On Duration:</p>
+<input type="range" min="5" max="50" step="5" value="25" onchange="serial_send('on_dur', this.value, '-')" oninput="value_show('on_dur', this.value)"> <span id="on_dur">25</span>
+
+<script>
+    function serial_send(span_id, value, prefix){
+        document.getElementById(span_id).innerHTML = value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/set/"+prefix+value, true);
+        xhttp.send();
+    }
+    function value_show(span_id, value){
+        document.getElementById(span_id).innerHTML = value;
+    }
+</script>
